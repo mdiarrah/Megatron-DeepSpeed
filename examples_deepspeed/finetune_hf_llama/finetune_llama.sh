@@ -7,9 +7,9 @@ HF_LLAMA_PATH=/data/llama-7b/
 
 MICRO_BATCH_SIZE=16
 GLOBAL_BATCH_SIZE=256
-TP=2 
+TP=3 
 #2
-PP=2 
+PP=3 
 #2
 # require to align with weight dimensions
 HIDDEN_SIZE=4096
@@ -47,7 +47,7 @@ EOT
 
 PUBLIC_IP=$(curl http://ip-api.com/json | jq -r '.query')
 #SSH_PORT="2222"
-NODES="2"
+NODES="3"
 GPUs="1"
 
 covert_args="deepspeed --num_nodes $NODES --num_gpus $GPUs --master_addr $PUBLIC_IP --ssh_port 2222 tools/hf2megads_weight_converter.py \
