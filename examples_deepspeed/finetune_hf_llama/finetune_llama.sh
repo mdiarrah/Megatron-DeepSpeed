@@ -44,12 +44,12 @@ cat <<EOT > $DS_CONFIG
 EOT
 
 
-covert_args="deepspeed tools/hf2megads_weight_converter.py \
+covert_args="deepspeed --ssh_port 2222 tools/hf2megads_weight_converter.py \
 --hf-ckpt-num-shards 2 \
 --origin-hf-ckpt-dir $HF_LLAMA_PATH \
 --save $MEGA_DS_LLAMA_PATH"
 
-finetune_args="deepspeed finetune_llama.py \
+finetune_args="deepspeed --ssh_port 2222 finetune_llama.py \
 --load $MEGA_DS_LLAMA_PATH"
 
 comm_args="--tensor-model-parallel-size $TP \
