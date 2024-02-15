@@ -5,8 +5,8 @@ DATASET_PATH=./alpaca_data.json
 HF_LLAMA_PATH=/data/llama-7b/
 # weights link: https://huggingface.co/huggyllama/llama-7b
 
-MICRO_BATCH_SIZE=8
-GLOBAL_BATCH_SIZE=128
+MICRO_BATCH_SIZE=2
+GLOBAL_BATCH_SIZE=32
 TP=2
 PP=2
 # require to align with weight dimensions
