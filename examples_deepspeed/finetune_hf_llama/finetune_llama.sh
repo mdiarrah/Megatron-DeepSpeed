@@ -7,8 +7,10 @@ HF_LLAMA_PATH=/data/llama-7b/
 
 MICRO_BATCH_SIZE=16
 GLOBAL_BATCH_SIZE=256
-TP=2
-PP=2
+TP=1 
+#2
+PP=1 
+#2
 # require to align with weight dimensions
 HIDDEN_SIZE=4096
 FFN_HIDDEN_SIZE=11008
