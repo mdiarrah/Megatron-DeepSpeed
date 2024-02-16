@@ -47,7 +47,7 @@ EOT
 
 PUBLIC_IP=$(curl http://ip-api.com/json | jq -r '.query')
 #SSH_PORT="2222"
-NODES="3"
+NODES="2"
 GPUs="1"
 
 covert_args="deepspeed --num_nodes $NODES --num_gpus $GPUs --master_addr $PUBLIC_IP --ssh_port 2222 tools/hf2megads_weight_converter.py \
