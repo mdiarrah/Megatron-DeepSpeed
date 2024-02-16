@@ -91,7 +91,7 @@ comm_args="--tensor-model-parallel-size $TP \
 --save-interval 1500 \
 --split 100,0,0 \
 --bf16 \
---zero-stage 2 \
+--zero-stage 3 \
 --tokenizer-type HFTokenizer \
 --tokenizer-model $HF_LLAMA_PATH \
 --deepspeed_config ./examples_deepspeed/finetune_hf_llama/ds_config.json \
