@@ -93,7 +93,7 @@ comm_args="--tensor-model-parallel-size $TP \
 --bf16 \
 --zero-stage 0 \
 --checkpoint-in-cpu \
---cpu-optimizer'
+--cpu-optimizer \
 --remote-device cpu \
 --tokenizer-type HFTokenizer \
 --tokenizer-model $HF_LLAMA_PATH \
