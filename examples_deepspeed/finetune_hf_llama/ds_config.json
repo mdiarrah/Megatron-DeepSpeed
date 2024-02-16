@@ -3,7 +3,7 @@
   "train_micro_batch_size_per_gpu": 16,
   "steps_per_print": 100,
   "zero_optimization": {
-    "stage": 0
+    "stage": 3
   },
   "bf16": {
     "enabled": true
