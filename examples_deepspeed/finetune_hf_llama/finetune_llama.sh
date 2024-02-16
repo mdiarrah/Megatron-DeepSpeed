@@ -91,7 +91,7 @@ comm_args="--tensor-model-parallel-size $TP \
 --save-interval 1500 \
 --split 100,0,0 \
 --bf16 \
---zero-stage 3 \
+--zero-stage 2 \
 --remote-device cpu \
 --tokenizer-type HFTokenizer \
 --tokenizer-model $HF_LLAMA_PATH \
