@@ -89,9 +89,10 @@ comm_args="--tensor-model-parallel-size $TP \
 --eval-interval 100 \
 --data-path $DATASET_PATH \
 --save-interval 1500 \
---split 50,50,0 \
+--split 100,0,0 \
 --bf16 \
 --zero-stage 3 \
+--remote-device cpu \
 --tokenizer-type HFTokenizer \
 --tokenizer-model $HF_LLAMA_PATH \
 --deepspeed_config ./examples_deepspeed/finetune_hf_llama/ds_config.json \
