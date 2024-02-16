@@ -89,7 +89,7 @@ comm_args="--tensor-model-parallel-size $TP \
 --eval-interval 100 \
 --data-path $DATASET_PATH \
 --save-interval 1500 \
---split 100,0,0 \
+--split 50,50,0 \
 --bf16 \
 --zero-stage 3 \
 --tokenizer-type HFTokenizer \
