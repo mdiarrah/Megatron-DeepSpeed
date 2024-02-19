@@ -18,8 +18,8 @@ def tokenize_function(examples):
 
 
 training_args = TrainingArguments("test_trainer",evaluation_strategy="epoch", deepspeed="/home/deepspeed/Megatron-DeepSpeed/hive/ds_config_zero3.json")
-#model = AutoModel.from_pretrained("bert-base-cased", num_labels=2)
-model = AutoModelForSequenceClassification.from_pretrained("bert-base-cased", num_labels=2)
+model = AutoModel.from_pretrained("bert-base-cased")#, num_labels=2)
+#model = AutoModelForSequenceClassification.from_pretrained("bert-base-cased", num_labels=2)
 raw_datasets = load_dataset("imdb")
 tokenizer = AutoTokenizer.from_pretrained("bert-base-cased")
 #tokenizer = AutoModelForSequenceClassification.from_pretrained("bert-base-cased")
