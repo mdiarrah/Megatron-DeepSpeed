@@ -48,3 +48,4 @@ trainer = Trainer(
 )
 #trainer.evaluate()
 trainer.train()
+trainer.save_model("/data/bert-ft")
