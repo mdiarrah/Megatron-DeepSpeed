@@ -5,6 +5,15 @@ from transformers import AutoModelForSequenceClassification
 import numpy as np
 from datasets import load_metric
 
+
+class HFTrainer(Trainer):
+    def _inner_training_loop(self, batch_size=None, args=None, resume_from_checkpoint=None, trial=None, ignore_keys_for_eval=None):
+        # Hack to fix: https://github.com/huggingface/transformers/issues/24558
+        if self.args.auto_find_batch_size:
+            self.model_wrapped = self.model
+            self.deepspeed = None
+        return super()._inner_training_loop(batch_size, args, resume_from_checkpoint, trial, ignore_keys_for_eval)
+
 metric = load_metric("accuracy")
 
 def compute_metrics(eval_pred):
