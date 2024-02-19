@@ -1,4 +1,10 @@
 {
+    "comms_logger": {
+        "enabled": true,
+        "verbose": true,
+        "prof_all": true,
+        "debug": true
+      },
     "fp16": {
         "enabled": "auto",
         "loss_scale": 0,
