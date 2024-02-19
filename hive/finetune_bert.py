@@ -43,8 +43,8 @@ trainer = Trainer(
     model=model, 
     args=training_args, 
     train_dataset=small_train_dataset, 
-    eval_dataset=small_eval_dataset,
-    compute_metrics=compute_metrics,
+    #eval_dataset=small_eval_dataset,
+    #compute_metrics=compute_metrics,
 )
-trainer.evaluate()
+#trainer.evaluate()
 trainer.train()
