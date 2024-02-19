@@ -16,6 +16,9 @@ def tokenize_function(examples):
     return tokenizer(examples["text"], padding="max_length", truncation=True)
 
 
+
+training_args = TrainingArguments("test_trainer",evaluation_strategy="epoch", deepspeed="./ds_config_zero3.json")
+model = AutoModel.from_pretrained("bert-base-cased", num_labels=2)
 raw_datasets = load_dataset("imdb")
 tokenizer = AutoTokenizer.from_pretrained("bert-base-cased")
 tokenized_datasets = raw_datasets.map(tokenize_function, batched=True)
@@ -24,8 +27,6 @@ small_train_dataset = tokenized_datasets["train"].shuffle(seed=42).select(range(
 small_eval_dataset = tokenized_datasets["test"].shuffle(seed=42).select(range(1000))
 full_train_dataset = tokenized_datasets["train"]
 full_eval_dataset = tokenized_datasets["test"]
-training_args = TrainingArguments("test_trainer",evaluation_strategy="epoch", deepspeed="./ds_config_zero3.json")
-model = AutoModelForSequenceClassification.from_pretrained("bert-base-cased", num_labels=2)
 
 trainer = Trainer(
     model=model, 
