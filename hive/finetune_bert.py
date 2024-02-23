@@ -4,15 +4,8 @@ from transformers import AutoModel, Trainer, TrainingArguments
 from transformers import AutoModelForSequenceClassification
 import numpy as np
 from datasets import load_metric
+import wandb
 
-
-class HFTrainer(Trainer):
-    def _inner_training_loop(self, batch_size=None, args=None, resume_from_checkpoint=None, trial=None, ignore_keys_for_eval=None):
-        # Hack to fix: https://github.com/huggingface/transformers/issues/24558
-        if self.args.auto_find_batch_size:
-            self.model_wrapped = self.model
-            self.deepspeed = None
-        return super()._inner_training_loop(batch_size, args, resume_from_checkpoint, trial, ignore_keys_for_eval)
 
 metric = load_metric("accuracy")
 
@@ -25,28 +18,40 @@ def tokenize_function(examples):
     return tokenizer(examples["text"], padding="max_length", truncation=True)
 
 
-training_args = TrainingArguments("test_trainer", deepspeed="/home/deepspeed/Megatron-DeepSpeed/hive/ds_config_zero3.json")
-#training_args = TrainingArguments("test_trainer",evaluation_strategy="epoch", deepspeed="/home/deepspeed/Megatron-DeepSpeed/hive/ds_config_zero3.json")
-#model = AutoModel.from_pretrained("bert-base-cased")#, num_labels=2)
-model = AutoModelForSequenceClassification.from_pretrained("bert-base-cased", num_labels=2)
+# define wandb parameters
+wandb.login(key="0bd3b89d4bbaa98b6011cc062e7a757da2e3645c")
+wandb.init(project="distributed-bert-finetuning")
+
+# Define training args and enable deepspeed 
+training_args = TrainingArguments("test_trainer",report_to="wandb", deepspeed="/home/deepspeed/Megatron-DeepSpeed/hive/ds_config_zero3.json")
+
+# Define class labels
+id2label = {0: "NEGATIVE", 1: "POSITIVE"}
+label2id = {"NEGATIVE": 0, "POSITIVE": 1}
+
+# Load the model for text classification
+model = AutoModelForSequenceClassification.from_pretrained("bert-base-cased", num_labels=2, id2label=id2label, label2id=label2id)
+
+# Load labeled movie review dataset
 raw_datasets = load_dataset("imdb")
+
+# Show a labeled training sample
+print("sample[0]: ".format(raw_datasets["train"][0]))
+
 tokenizer = AutoTokenizer.from_pretrained("bert-base-cased")
-#tokenizer = AutoModelForSequenceClassification.from_pretrained("bert-base-cased")
 tokenized_datasets = raw_datasets.map(tokenize_function, batched=True)
 
+# Train only on 1000 samples
 small_train_dataset = tokenized_datasets["train"].shuffle(seed=42).select(range(1000))
-small_eval_dataset = tokenized_datasets["test"].shuffle(seed=42).select(range(1000))
-full_train_dataset = tokenized_datasets["train"]
-full_eval_dataset = tokenized_datasets["test"]
 
 trainer = Trainer(
     model=model, 
     args=training_args, 
     train_dataset=small_train_dataset, 
-    #eval_dataset=small_eval_dataset,
-    #compute_metrics=compute_metrics,
 )
-#trainer.evaluate()
 result = trainer.train()
 print(result)
-trainer.save_model("/data/bert-ft")
+
+# Save the finetuned Model and its tokenizer
+trainer.save_model("/data/hive-finetuned-bert")
+tokenizer.save_pretrained("/data/hive-finetuned-bert")
