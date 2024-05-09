@@ -44,10 +44,10 @@ cat <<EOT > $DS_CONFIG
 }
 EOT
 
-#--origin-hf-ckpt-dir $HF_LLAMA_PATH \
+#--origin-hf-ckpt-dir $HF_LLAMA_REPO \
 covert_args="deepspeed tools/hf2megads_weight_converter.py \
 --hf-ckpt-num-shards 2 \
---origin-hf-ckpt-dir $HF_LLAMA_REPO \
+--origin-hf-ckpt-dir $HF_LLAMA_PATH \
 --save $MEGA_DS_LLAMA_PATH"
 
 finetune_args="deepspeed finetune_llama.py \
@@ -88,7 +88,7 @@ comm_args="--tensor-model-parallel-size $TP \
 --bf16 \
 --zero-stage 0 \
 --tokenizer-type HFTokenizer \
---tokenizer-model $HF_LLAMA_REPO \
+--tokenizer-model $HF_LLAMA_PATH \
 --deepspeed_config ./examples_deepspeed/finetune_hf_llama/ds_config_default.json \
 --deepspeed \
 --distributed-backend nccl \
