@@ -53,12 +53,12 @@ cat <<EOT > $DS_CONFIG
 EOT
 
 #--origin-hf-ckpt-dir $HF_LLAMA_REPO \
-covert_args="deepspeed tools/hf2megads_weight_converter.py \
+covert_args="deepspeed --num_nodes $NODES \ tools/hf2megads_weight_converter.py \
 --hf-ckpt-num-shards 2 \
 --origin-hf-ckpt-dir $HF_LLAMA_PATH \
 --save $MEGA_DS_LLAMA_PATH"
 
-finetune_args="deepspeed finetune_llama.py \
+finetune_args="deepspeed --num_nodes $NODES \ finetune_llama.py \
 --load $MEGA_DS_LLAMA_PATH"
 
 comm_args="--tensor-model-parallel-size $TP \
@@ -101,7 +101,6 @@ comm_args="--tensor-model-parallel-size $TP \
 --deepspeed \
 --distributed-backend nccl \
 --num-workers 0 \
---num_nodes $NODES \
 --no-masked-softmax-fusion \
 --no-bias-gelu-fusion \
 --no-bias-dropout-fusion \
