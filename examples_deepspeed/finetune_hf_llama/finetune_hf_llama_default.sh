@@ -3,6 +3,7 @@ DATASET_PATH=./alpaca_data.json
 # dataset link: https://github.com/tatsu-lab/stanford_alpaca/blob/main/alpaca_data.json
 
 HF_LLAMA_PATH=/data/llama-7b/
+HF_LLAMA_REPO="huggyllama/llama-7b"
 # weights link: https://huggingface.co/huggyllama/llama-7b
 
 MICRO_BATCH_SIZE=16
@@ -43,10 +44,10 @@ cat <<EOT > $DS_CONFIG
 }
 EOT
 
-
+#--origin-hf-ckpt-dir $HF_LLAMA_PATH \
 covert_args="deepspeed tools/hf2megads_weight_converter.py \
 --hf-ckpt-num-shards 2 \
---origin-hf-ckpt-dir $HF_LLAMA_PATH \
+--origin-hf-ckpt-dir $HF_LLAMA_REPO \
 --save $MEGA_DS_LLAMA_PATH"
 
 finetune_args="deepspeed finetune_llama.py \
@@ -87,7 +88,7 @@ comm_args="--tensor-model-parallel-size $TP \
 --bf16 \
 --zero-stage 0 \
 --tokenizer-type HFTokenizer \
---tokenizer-model $HF_LLAMA_PATH \
+--tokenizer-model $HF_LLAMA_REPO \
 --deepspeed_config ./examples_deepspeed/finetune_hf_llama/ds_config_default.json \
 --deepspeed \
 --distributed-backend nccl \
