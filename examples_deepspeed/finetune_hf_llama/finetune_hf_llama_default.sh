@@ -3,6 +3,14 @@ DATASET_PATH=./alpaca_data.json
 # dataset link: https://github.com/tatsu-lab/stanford_alpaca/blob/main/alpaca_data.json
 
 HF_LLAMA_PATH=/data/llama-7b/
+if [ -d $HF_LLAMA_PATH ]; then
+  echo "[INFO] Cloning model weight into $HF_LLAMA_PATH ..."
+  git lfs install
+  dir_name=$(basename $HF_LLAMA_PATH)
+  clone_path="/data/"$dir_name 
+  git clone https://huggingface.co/huggyllama/llama-7b $clone_path
+fi
+
 HF_LLAMA_REPO="huggyllama/llama-7b"
 # weights link: https://huggingface.co/huggyllama/llama-7b
 
@@ -18,7 +26,7 @@ NUM_HEADS=32
 SEQ_LENGTH=512
 ######################################
 
-MEGA_DS_LLAMA_PATH=./"llama-7b-mega-ds-T${TP}P${PP}"
+MEGA_DS_LLAMA_PATH=/output/"llama-7b-mega-ds-T${TP}P${PP}"
 
 # Below configuration required for llama model as per llama paper
 # --no-query-key-layer-scaling \
