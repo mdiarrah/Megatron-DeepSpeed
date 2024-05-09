@@ -29,6 +29,10 @@ from torch import nn
 import torch.nn.functional as F
 from transformers import AutoTokenizer
 
+try:
+    import wandb
+except (ImportError, ModuleNotFoundError):
+    wandb = None
 
 def model_provider(pre_process=True, post_process=True):
     """Build the model."""
@@ -296,6 +300,11 @@ def forward_step(data_iterator, model):
         if args.teacher_forward and args.teacher_model is not None:
             mos_loss = calculate_mos_loss(args, stu_output,
                 args.teacher_model[0], tokens, position_ids, attention_mask)
+    
+    # Log losses to W&B
+    if wandb:
+        loss_dict = {'moe_loss': moe_loss.item(), 'mos_loss': mos_loss.item()}
+        wandb.log(loss_dict)
 
     # Output_tensor stores the standard loss, loos_func calculates the total loss.
     return output_tensor, partial(loss_func, loss_mask, moe_loss, mos_loss)
@@ -343,6 +352,17 @@ def git_ds_info():
 
 if __name__ == "__main__":
     git_ds_info()
+    # Initialize W&B
+    if wandb is not None:
+        # define wandb parameters
+        wandb.login(key="0bd3b89d4bbaa98b6011cc062e7a757da2e3645c")
+        wandb.init(project="llama-7b-finetuning-8rtx4090")
+     # Set up the model
+    model = model_provider()
+    # Start watching the model
+    if wandb is not None:
+        wandb.watch(model)
+        
     pretrain(prompt_train_valid_test_datasets_provider,
              model_provider,
              ModelType.encoder_or_decoder,
