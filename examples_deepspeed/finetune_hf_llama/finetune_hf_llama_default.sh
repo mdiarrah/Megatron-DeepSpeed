@@ -3,7 +3,7 @@ DATASET_PATH=./alpaca_data.json
 # dataset link: https://github.com/tatsu-lab/stanford_alpaca/blob/main/alpaca_data.json
 
 HF_LLAMA_PATH=/data/llama-7b/
-if [ -d $HF_LLAMA_PATH ]; then
+if [ ! -d $HF_LLAMA_PATH ]; then
   echo "[INFO] Cloning model weight into $HF_LLAMA_PATH ..."
   git lfs install
   dir_name=$(basename $HF_LLAMA_PATH)
