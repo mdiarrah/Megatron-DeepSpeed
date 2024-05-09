@@ -5,6 +5,13 @@
         "prof_all": true,
         "debug": true
       },
+    "wandb":{
+        "enabled": true, 
+        "group": "techno", 
+        "team": "techno", 
+        "project": "distributed-finetuning" 
+
+    },
     "fp16": {
         "enabled": "auto",
         "loss_scale": 0,
