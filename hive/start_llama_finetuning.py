@@ -33,13 +33,14 @@ train_ds_packed = raw_datasets["train"]
 
 # Show a labeled training sample
 print("sample[0]: ".format(raw_datasets["train"][0]))
-
+'''
 batch_size = 8  # I have an A100 GPU with 40GB of RAM 😎
 train_dataloader = DataLoader(
     train_ds_packed,
     batch_size=batch_size,
     collate_fn=default_data_collator, # we don't need any special collator 😎
 )
+'''
 
 # Load the model for text classification
 model = AutoModel.from_pretrained("huggyllama/llama-7b")
