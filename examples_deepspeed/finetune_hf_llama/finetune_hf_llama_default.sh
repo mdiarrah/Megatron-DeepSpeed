@@ -1,7 +1,7 @@
 DS_CONFIG=./examples_deepspeed/finetune_hf_llama/ds_config_default.json
 DATASET_PATH=./alpaca_data.json
 # dataset link: https://github.com/tatsu-lab/stanford_alpaca/blob/main/alpaca_data.json
-NODES="1"
+NODES="0"
 HF_LLAMA_PATH=/data/llama-7b/
 if [ ! -d $HF_LLAMA_PATH ]; then
   echo "[INFO] Cloning model weight into $HF_LLAMA_PATH ..."
