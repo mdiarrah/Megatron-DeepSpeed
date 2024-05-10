@@ -58,7 +58,7 @@ covert_args="deepspeed --num_nodes $NODES \ tools/hf2megads_weight_converter.py 
 --origin-hf-ckpt-dir $HF_LLAMA_PATH \
 --save $MEGA_DS_LLAMA_PATH"
 
-finetune_args="deepspeed --num_nodes $NODES \ ./finetune_llama.py \
+finetune_args="deepspeed --num_nodes $NODES \ /home/deepspeed/Megatron-DeepSpeed/finetune_llama.py \
 --load $MEGA_DS_LLAMA_PATH"
 
 comm_args="--tensor-model-parallel-size $TP \
