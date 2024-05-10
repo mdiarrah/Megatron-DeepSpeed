@@ -45,7 +45,7 @@ train_dataloader = DataLoader(
 model = AutoModel.from_pretrained("huggyllama/llama-7b")
 
 # Define training args and enable deepspeed 
-training_args = TrainingArguments("test_trainer",report_to="wandb", deepspeed="/home/deepspeed/Megatron-DeepSpeed/hive/ds_config_zero3.json")
+training_args = TrainingArguments("test_trainer",report_to="wandb", deepspeed="/home/deepspeed/Megatron-DeepSpeed/examples_deepspeed/finetune_hf_llama/ds_config_default.json")
 
 tokenizer = AutoTokenizer.from_pretrained("huggyllama/llama-7b")
 tokenized_datasets = raw_datasets.map(tokenize_function, batched=True)
