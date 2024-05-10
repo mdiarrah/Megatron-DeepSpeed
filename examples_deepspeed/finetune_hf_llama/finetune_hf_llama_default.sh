@@ -54,7 +54,7 @@ EOT
 
 #--origin-hf-ckpt-dir $HF_LLAMA_REPO \
 covert_args="deepspeed tools/hf2megads_weight_converter.py \
---hf-ckpt-num-shards 8 \
+--hf-ckpt-num-shards 2 \
 --origin-hf-ckpt-dir $HF_LLAMA_PATH \
 --save $MEGA_DS_LLAMA_PATH"
 
