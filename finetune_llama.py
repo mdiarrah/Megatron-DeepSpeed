@@ -260,6 +260,9 @@ def calculate_mos_loss(args, stu_output, teacher_model, tokens, position_ids, at
 
 def forward_step(data_iterator, model):
     """Forward step."""
+    # Start watching the model
+    if wandb is not None:
+        wandb.watch(model)
     args = get_args()
     timers = get_timers()
 
@@ -357,11 +360,7 @@ if __name__ == "__main__":
         # define wandb parameters
         wandb.login(key="0bd3b89d4bbaa98b6011cc062e7a757da2e3645c")
         wandb.init(project="llama-7b-finetuning-8rtx4090")
-     # Set up the model
-    model = model_provider()
-    # Start watching the model
-    if wandb is not None:
-        wandb.watch(model)
+     
         
     pretrain(prompt_train_valid_test_datasets_provider,
              model_provider,
