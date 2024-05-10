@@ -52,7 +52,7 @@ tokenizer = AutoTokenizer.from_pretrained("huggyllama/llama-7b")
 tokenized_datasets = raw_datasets.map(tokenize_function, batched=True)
 
 # Train only on 1000 samples
-small_train_dataset = tokenized_datasets["train"].shuffle(seed=42).select(range(1000))
+small_train_dataset = tokenized_datasets["train"].shuffle(seed=42).select(range(200))
 
 trainer = Trainer(
     model=model, 
