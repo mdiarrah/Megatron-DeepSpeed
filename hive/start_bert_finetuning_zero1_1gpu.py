@@ -23,7 +23,7 @@ wandb.login(key="0bd3b89d4bbaa98b6011cc062e7a757da2e3645c")
 wandb.init(project="bert-training-rtx4090-zero1-1gpu")
 
 # Define training args and enable deepspeed 
-training_args = TrainingArguments("test_trainer",report_to="wandb", deepspeed="/home/deepspeed/Megatron-DeepSpeed/hive/ds_config_zero1.json")
+training_args = TrainingArguments("test_trainer",report_to="wandb",evaluation_strategy="epoch", deepspeed="/home/deepspeed/Megatron-DeepSpeed/hive/ds_config_zero1.json")
 
 # Define class labels
 id2label = {0: "NEGATIVE", 1: "POSITIVE"}
@@ -43,11 +43,14 @@ tokenized_datasets = raw_datasets.map(tokenize_function, batched=True)
 
 # Train only on 5000 samples
 small_train_dataset = tokenized_datasets["train"].shuffle(seed=42).select(range(5000))
+small_eval_dataset = tokenized_datasets["test"].shuffle(seed=42).select(range(5000))
 
 trainer = Trainer(
     model=model, 
     args=training_args, 
-    train_dataset=small_train_dataset, 
+    train_dataset=small_train_dataset,
+    eval_dataset=small_eval_dataset,
+    compute_metrics=compute_metrics, 
 )
 result = trainer.train()
 print(result)
